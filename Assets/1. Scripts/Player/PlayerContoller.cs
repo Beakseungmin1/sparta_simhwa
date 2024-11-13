@@ -35,7 +35,7 @@ public class PlayerContoller : MonoBehaviour
         }
     }
 
-    
+
     public void Findzombie()
     {
 
@@ -46,14 +46,12 @@ public class PlayerContoller : MonoBehaviour
         transform.position = Vector3.MoveTowards(startPosition.position, targetPosition.position, curMoveSpeed * Time.deltaTime);
     }
 
-    
 
-    public void OnInventory(InputAction.CallbackContext context)
+
+    public void OnInventory()
     {
-        if(context.phase == InputActionPhase.Started)
-        {
-            inventory?.Invoke();
-        }
+
+        inventory?.Invoke();
     }
 
 }
