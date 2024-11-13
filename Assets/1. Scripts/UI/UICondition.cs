@@ -8,6 +8,8 @@ public class UICondition : MonoBehaviour
     //public Condition hunger;
     public Condition stamina;
 
+    public Condition exp;
+
     void Start()
     {
         CharacterManager.Instance.Player.condition.uiCondition = this;

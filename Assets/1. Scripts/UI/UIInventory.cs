@@ -210,9 +210,6 @@ public class UIInventory : MonoBehaviour
                     case ConsumableType.Speed:
                         condition.SpeedBoost(selectedItem.consumables[i].value, selectedItem.consumables[i].duration);
                         break;
-                    case ConsumableType.Jump:
-                        condition.JumpBoost(selectedItem.consumables[i].value, selectedItem.consumables[i].duration);
-                        break;
                 }
             }
             RemoveSelectedItem();
@@ -259,9 +256,6 @@ public class UIInventory : MonoBehaviour
                     case EquipType.Weapon:
                         condition.Heal(selectedItem.Equips[i].value);
                         break;
-                    case EquipType.Wing:
-                        controller.AddJump(selectedItem.Equips[i].value);
-                        break;
                 }
             }
         }
@@ -283,9 +277,6 @@ public class UIInventory : MonoBehaviour
                     //무기추가하면 수정예정
                     case EquipType.Weapon:
                         condition.Heal(selectedItem.Equips[i].value);
-                        break;
-                    case EquipType.Wing:
-                        controller.DisCountJump(selectedItem.Equips[i].value);
                         break;
                 }
             }
