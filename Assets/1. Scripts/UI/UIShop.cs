@@ -4,11 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIInventory : MonoBehaviour
+public class UIShop : MonoBehaviour
 {
     public ItemSlot[] slots;
 
-    public GameObject inventoryWindow;
+    public GameObject ShopWindow;
     public Transform slotPanel;
     public Transform dropPosition;
 
@@ -41,15 +41,14 @@ public class UIInventory : MonoBehaviour
         controller.inventory += Toggle;
         CharacterManager.Instance.Player.addItem += Additem;
 
-        inventoryWindow.SetActive(false);
+        ShopWindow.SetActive(false);
         slots = new ItemSlot[slotPanel.childCount];
-        ClearSelectedItemWindow();
 
-        for (int i = 0; i < slots.Length; i++)
+        for(int i = 0; i < slots.Length; i++)
         {
             slots[i] = slotPanel.GetChild(i).GetComponent<ItemSlot>();
             slots[i].index = i;
-            slots[i].Inventory = this;
+            slots[i].UIShop = this;
         }
     }
 
@@ -77,17 +76,17 @@ public class UIInventory : MonoBehaviour
     {
         if(isOpen())
         {
-            inventoryWindow.SetActive(false);
+            ShopWindow.SetActive(false);
         }
         else
         {
-            inventoryWindow.SetActive(true);
+            ShopWindow.SetActive(true);
         }
     }
 
     public bool isOpen()
     {
-        return inventoryWindow.activeInHierarchy;
+        return ShopWindow.activeInHierarchy;
     }
 
     void Additem()

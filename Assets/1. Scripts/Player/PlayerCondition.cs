@@ -6,7 +6,7 @@ using UnityEngine;
 
 public interface IDamagalbe
 {
-    void TakePhysicalDamage(int damage);
+    void TakePhysicalDamage(float damage);
 }
 
 public class PlayerCondition : MonoBehaviour, IDamagalbe
@@ -16,8 +16,6 @@ public class PlayerCondition : MonoBehaviour, IDamagalbe
     Condition health { get { return uiCondition.health; } }
     Condition Mana { get { return uiCondition.stamina; } }
     Condition Exp {  get { return uiCondition.exp; } }
-
-    public event Action onTakeDamage;
 
     void Update()
     {
@@ -57,9 +55,8 @@ public class PlayerCondition : MonoBehaviour, IDamagalbe
         Debug.Log("Á×À½");
     }
 
-    public void TakePhysicalDamage(int damage)
+    public void TakePhysicalDamage(float damage)
     {
         health.Subtract(damage);
-        onTakeDamage?.Invoke();
     }
 }

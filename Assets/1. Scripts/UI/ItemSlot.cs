@@ -14,6 +14,7 @@ public class ItemSlot : MonoBehaviour
     private Outline outline;
 
     public UIInventory Inventory;
+    public UIShop UIShop;
 
     public int index;
     public bool equipped;
