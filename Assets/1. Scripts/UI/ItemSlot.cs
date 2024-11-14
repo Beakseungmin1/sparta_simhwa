@@ -51,7 +51,14 @@ public class ItemSlot : MonoBehaviour
 
     public void OnClickButton()
     {
-        Inventory.SelectItem(index);
+        if (Inventory.isOpen())
+        {
+            Inventory.SelectItem(index);
+        }
+        else
+        {
+            UIShop.SelectItem(index);
+        }
     }
 
 

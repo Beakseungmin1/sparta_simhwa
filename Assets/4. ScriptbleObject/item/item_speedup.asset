@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: "\uC2A4\uD53C\uB4DC\uC5C5"
   description: "10\uCD08\uB3D9\uC548 \uC2A4\uD53C\uB4DC\uAC00 \uC99D\uAC00\uD55C\uB2E4"
+  Price: 300
   type: 1
   icon: {fileID: -126180286, guid: 307db83f77aefbc4a862dc08c339f7b2, type: 3}
   dropPrefab: {fileID: 2200885397137829492, guid: 0af34c2815aaefe4b92240fb09cf6b94, type: 3}
@@ -24,3 +25,4 @@ MonoBehaviour:
     value: 5
     duration: 10
   equipPrefab: {fileID: 0}
+  Equips: []

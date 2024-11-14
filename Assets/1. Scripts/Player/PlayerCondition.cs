@@ -44,6 +44,12 @@ public class PlayerCondition : MonoBehaviour, IDamagalbe
         CharacterManager.Instance.Player.controller.curMoveSpeed -= value; // 원래 값으로 복구
     }
 
+    public void AddExp(float amount)
+    {
+        Exp.Add(amount);
+    }
+
+
 
     //public void Eat(float amount)
     //{

@@ -11,6 +11,8 @@ public class UIInventory : MonoBehaviour
     public GameObject inventoryWindow;
     public Transform slotPanel;
     public Transform dropPosition;
+    public float Gold;
+    public TextMeshProUGUI GoldValue;
 
     [Header("Select item")]
     public Image selectedItemicon;
@@ -31,7 +33,6 @@ public class UIInventory : MonoBehaviour
 
     int curEquipIndex;
 
-    // Start is called before the first frame update
     void Start()
     {
         controller = CharacterManager.Instance.Player.controller;
@@ -39,7 +40,6 @@ public class UIInventory : MonoBehaviour
         dropPosition = CharacterManager.Instance.Player.dropPosition;
 
         controller.inventory += Toggle;
-        CharacterManager.Instance.Player.addItem += Additem;
 
         inventoryWindow.SetActive(false);
         slots = new ItemSlot[slotPanel.childCount];
@@ -53,10 +53,9 @@ public class UIInventory : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        GoldValue.text = Gold.ToString();
     }
 
     void ClearSelectedItemWindow()
@@ -90,10 +89,9 @@ public class UIInventory : MonoBehaviour
         return inventoryWindow.activeInHierarchy;
     }
 
-    void Additem()
+    public void Additem(ItemData data)
     {
-        ItemData data = CharacterManager.Instance.Player.itemData;
-        // 아이템이 중복 가능한지 canStack
+
         if(data.canStack)
         {
             ItemSlot slot = GetItemStack(data);
@@ -106,10 +104,8 @@ public class UIInventory : MonoBehaviour
             }
         }
 
-        // 비어있는 슬롯 가져온다.
         ItemSlot emptySlot = GetEmptySlot();
 
-        // 있다면
         if(emptySlot != null)
         {
             emptySlot.Item = data;
@@ -119,8 +115,6 @@ public class UIInventory : MonoBehaviour
             return;
         }
 
-        // 없다면
-        ThrowItem(data);
         CharacterManager.Instance.Player.itemData = null;
     }
 
@@ -161,11 +155,6 @@ public class UIInventory : MonoBehaviour
             }
         }
         return null;
-    }
-
-    void ThrowItem(ItemData data)
-    {
-        Instantiate(data.dropPrefab, dropPosition.position, Quaternion.identity);//Quaternion.Euler(Vector3.one * Random.value * 360));
     }
 
     public void SelectItem(int index)
@@ -219,7 +208,6 @@ public class UIInventory : MonoBehaviour
 
     public void OnDropButton()
     {
-        ThrowItem(selectedItem);
         RemoveSelectedItem();
     }
 
@@ -255,7 +243,7 @@ public class UIInventory : MonoBehaviour
                 {
                     //무기추가하면 수정예정
                     case EquipType.Weapon:
-                        condition.Heal(selectedItem.Equips[i].value);
+                        controller.Damage += selectedItem.Equips[i].value;
                         break;
                 }
             }
@@ -275,9 +263,8 @@ public class UIInventory : MonoBehaviour
             {
                 switch (selectedItem.Equips[i].type)
                 {
-                    //무기추가하면 수정예정
                     case EquipType.Weapon:
-                        condition.Heal(selectedItem.Equips[i].value);
+                        controller.Damage -= selectedItem.Equips[i].value;
                         break;
                 }
             }
@@ -293,6 +280,11 @@ public class UIInventory : MonoBehaviour
     public void OnUnEquipButton()
     {
         UnEquip(selectedItemIndex);
+    }
+
+    public void GetGold(float amount)
+    {
+        Gold += amount;
     }
 
 }

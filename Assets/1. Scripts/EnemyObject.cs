@@ -8,6 +8,7 @@ public class EnemyObject : MonoBehaviour, IDamagalbe
     [SerializeField] private EnemySO data;
 
     private GameObject player;
+    private UIInventory inventory;
     private PlayerCondition condition;
 
     public float health;
@@ -32,6 +33,7 @@ public class EnemyObject : MonoBehaviour, IDamagalbe
     {
         player = CharacterManager.Instance.Player.gameObject;
         condition = player.GetComponent<PlayerCondition>();
+        inventory = CharacterManager.Instance.Player.inventory;
     }
     private void Update()
     {
@@ -77,7 +79,8 @@ public class EnemyObject : MonoBehaviour, IDamagalbe
 
     private void Die()
     {
-        Debug.Log(gameObject.name + " has died.");
+        condition.AddExp(data.giveExp);
+        inventory.GetGold(data.giveGold);
         gameObject.SetActive(false);
     }
 

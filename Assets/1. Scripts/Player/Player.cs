@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    public UIInventory inventory;
     public PlayerContoller controller;
     public PlayerCondition condition;
     public Equipment equip;
 
     public ItemData itemData;
-    public Action addItem;
 
     public Transform dropPosition;
 

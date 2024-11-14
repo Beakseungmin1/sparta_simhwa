@@ -8,20 +8,20 @@ public class UIShop : MonoBehaviour
 {
     public ItemSlot[] slots;
 
+    public UIInventory inventory;
+
     public GameObject ShopWindow;
     public Transform slotPanel;
-    public Transform dropPosition;
 
     [Header("Select item")]
     public Image selectedItemicon;
     public TextMeshProUGUI selectedItemName;
     public TextMeshProUGUI selectedItemDescription;
+    public TextMeshProUGUI selectedItemPrice;
     public TextMeshProUGUI selectedStatName;
     public TextMeshProUGUI selectedStatValue;
-    public GameObject useButton;
-    public GameObject equipButton;
-    public GameObject unequipButton;
-    public GameObject dropButton;
+
+    public GameObject BuyButton;
 
     private PlayerContoller controller;
     private PlayerCondition condition;
@@ -36,20 +36,21 @@ public class UIShop : MonoBehaviour
     {
         controller = CharacterManager.Instance.Player.controller;
         condition = CharacterManager.Instance.Player.condition;
-        dropPosition = CharacterManager.Instance.Player.dropPosition;
 
-        controller.inventory += Toggle;
-        CharacterManager.Instance.Player.addItem += Additem;
+        controller.Shop += Toggle;
 
         ShopWindow.SetActive(false);
         slots = new ItemSlot[slotPanel.childCount];
 
-        for(int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
             slots[i] = slotPanel.GetChild(i).GetComponent<ItemSlot>();
             slots[i].index = i;
             slots[i].UIShop = this;
         }
+
+        ClearSelectedItemWindow();
+        UpdateUI();
     }
 
     // Update is called once per frame
@@ -63,13 +64,11 @@ public class UIShop : MonoBehaviour
         selectedItemicon.gameObject.SetActive(false);
         selectedItemName.text = string.Empty;
         selectedItemDescription.text = string.Empty;
+        selectedItemPrice.text = string.Empty;
         selectedStatName.text = string.Empty;
         selectedStatValue.text = string.Empty;
 
-        useButton.SetActive(false);
-        equipButton.SetActive(false);
-        unequipButton.SetActive(false);
-        dropButton.SetActive(false);
+        BuyButton.SetActive(false);
     }
 
     public void Toggle()
@@ -119,7 +118,6 @@ public class UIShop : MonoBehaviour
         }
 
         // 없다면
-        ThrowItem(data);
         CharacterManager.Instance.Player.itemData = null;
     }
 
@@ -162,10 +160,6 @@ public class UIShop : MonoBehaviour
         return null;
     }
 
-    void ThrowItem(ItemData data)
-    {
-        Instantiate(data.dropPrefab, dropPosition.position, Quaternion.identity);//Quaternion.Euler(Vector3.one * Random.value * 360));
-    }
 
     public void SelectItem(int index)
     {
@@ -179,7 +173,9 @@ public class UIShop : MonoBehaviour
 
         selectedItemName.text = selectedItem.displayName;
         selectedItemDescription.text = selectedItem.description;
-        
+
+        selectedItemPrice.text = selectedItem.Price.ToString() + "G";
+
         selectedStatName.text = string.Empty;
         selectedStatValue.text = string.Empty;
 
@@ -189,109 +185,12 @@ public class UIShop : MonoBehaviour
             selectedStatValue.text += selectedItem.consumables[i].value.ToString() + "\n";
         }
 
-        useButton.SetActive(selectedItem.type == ItemType.Consumable);
-        equipButton.SetActive(selectedItem.type == ItemType.Equipable && !slots[index].equipped);
-        unequipButton.SetActive(selectedItem.type == ItemType.Equipable && slots[index].equipped);
-        dropButton.SetActive(true);
+        BuyButton.SetActive(true);
 
     }
 
-    public void OnUseButton()
+    public void OnBuyButton()
     {
-        if(selectedItem.type == ItemType.Consumable)
-        {
-            for(int i = 0; i < selectedItem.consumables.Length; i++)
-            {
-                switch(selectedItem.consumables[i].type)
-                {
-                    case ConsumableType.Health:
-                        condition.Heal(selectedItem.consumables[i].value);
-                        break;
-                    case ConsumableType.Speed:
-                        condition.SpeedBoost(selectedItem.consumables[i].value, selectedItem.consumables[i].duration);
-                        break;
-                }
-            }
-            RemoveSelectedItem();
-        }
+        inventory.Additem(selectedItem);
     }
-
-    public void OnDropButton()
-    {
-        ThrowItem(selectedItem);
-        RemoveSelectedItem();
-    }
-
-    void RemoveSelectedItem()
-    {
-        slots[selectedItemIndex].quantity--;
-
-        if (slots[selectedItemIndex].quantity <= 0)
-        {
-            selectedItem = null;
-            slots[selectedItemIndex].Item = null;
-            selectedItemIndex = -1;
-            ClearSelectedItemWindow();  
-        }
-        UpdateUI();
-    }
-
-    public void OnEquipButton()
-    {
-        if (slots[curEquipIndex].equipped)
-        {
-            UnEquip(curEquipIndex);
-        }
-
-        slots[selectedItemIndex].equipped = true;
-        curEquipIndex = selectedItemIndex;
-        CharacterManager.Instance.Player.equip.EquipNew(selectedItem);
-        if (selectedItem.type == ItemType.Equipable)
-        {
-            for (int i = 0; i < selectedItem.Equips.Length; i++)
-            {
-                switch (selectedItem.Equips[i].type)
-                {
-                    //무기추가하면 수정예정
-                    case EquipType.Weapon:
-                        condition.Heal(selectedItem.Equips[i].value);
-                        break;
-                }
-            }
-        }
-        UpdateUI();
-
-        SelectItem(selectedItemIndex);
-    }
-
-    void UnEquip(int index)
-    {
-        slots[index].equipped = false;
-        CharacterManager.Instance.Player.equip.UnEquip();
-        if (selectedItem.type == ItemType.Equipable)
-        {
-            for (int i = 0; i < selectedItem.Equips.Length; i++)
-            {
-                switch (selectedItem.Equips[i].type)
-                {
-                    //무기추가하면 수정예정
-                    case EquipType.Weapon:
-                        condition.Heal(selectedItem.Equips[i].value);
-                        break;
-                }
-            }
-        }
-        UpdateUI();
-
-        if(selectedItemIndex == index)
-        {
-            SelectItem(selectedItemIndex);
-        }
-    }
-
-    public void OnUnEquipButton()
-    {
-        UnEquip(selectedItemIndex);
-    }
-
 }

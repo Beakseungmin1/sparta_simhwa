@@ -183,7 +183,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3584930576153649372}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!114 &7403296462206344913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,6 +302,7 @@ MonoBehaviour:
   icon: {fileID: 6181323943133534812}
   quantityText: {fileID: 826786529674799907}
   Inventory: {fileID: 0}
+  UIShop: {fileID: 0}
   index: 0
   equipped: 0
   quantity: 0

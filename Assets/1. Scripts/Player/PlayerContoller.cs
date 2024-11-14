@@ -23,6 +23,7 @@ public class PlayerContoller : MonoBehaviour
     private Transform startPosition;
     public Transform targetPosition;
     public Action inventory;
+    public Action Shop;
     private Rigidbody _rigidbody;
 
     private void Awake()
@@ -42,7 +43,6 @@ public class PlayerContoller : MonoBehaviour
         {
             MoveToPoint();
         }
-        Debug.Log(isFindingEnemy);
     }
 
     private IEnumerator DetectEnemysCoroutine()
@@ -100,6 +100,11 @@ public class PlayerContoller : MonoBehaviour
     public void OnInventory()
     {
         inventory?.Invoke();
+    }
+
+    public void OnShop()
+    {
+        Shop?.Invoke();
     }
 
 }

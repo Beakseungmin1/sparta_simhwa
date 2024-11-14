@@ -14,6 +14,12 @@ public class EnemySO : ScriptableObject
     public float damage;
     public float attackRange;
     public float attackDealy;
+
+    [Header("reward")]
+    public float giveGold;
+    public float giveExp;
+
+
     public GameObject Prefab;
 
 }

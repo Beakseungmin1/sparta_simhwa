@@ -17,4 +17,6 @@ MonoBehaviour:
   damage: 5
   attackRange: 8
   attackDealy: 3
+  giveGold: 200
+  giveExp: 10
   Prefab: {fileID: 0}
